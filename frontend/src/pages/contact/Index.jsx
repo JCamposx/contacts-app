@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ContactCard from "./ContactCard";
+import Card from "../../components/Card";
 
-export default function ContactList() {
+export default function Index() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function ContactList() {
         {data.map((contact) => {
           return (
             <div key={contact.id} className="col-md-4 d-flex">
-              <ContactCard
+              <Card
                 name={contact.name}
                 description={contact.description}
                 phone_number={contact.phone_number}
