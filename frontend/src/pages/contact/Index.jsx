@@ -4,23 +4,33 @@ import { NavLink } from "react-router-dom";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
+import Spinner from "../../components/Spinner";
 import routes from "../../routes/routes.js";
 
 export default function Index() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(routes.contacts.index)
-      .then((res) => setData(res.data))
-      .catch((e) => setError("Failed loading contacts"));
+      .then((res) => {
+        setData(res.data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setError("Failed loading contacts");
+        setIsLoading(false);
+      });
   }, []);
 
   return (
-    <div>
+    <>
       <h1>Contacts</h1>
-      {error !== "" ? (
+      {isLoading ? (
+        <Spinner />
+      ) : error !== "" ? (
         <Alert type="danger">{error}</Alert>
       ) : (
         <div className="row justify-content-center align-items-center mt-3">
@@ -56,9 +66,8 @@ export default function Index() {
               );
             })
           )}
-          {/* {} */}
         </div>
       )}
-    </div>
+    </>
   );
 }
