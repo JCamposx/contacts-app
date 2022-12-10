@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import colorType from "../../assets/js/colorType";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormControl from "../../components/FormControl";
@@ -66,7 +67,7 @@ export default function Create() {
           onInputChange={handleChange}
         />
 
-        <Button type="primary" customClass="mt-2">
+        <Button type={colorType.primary} customClass="mt-2">
           Submit
         </Button>
       </Form>

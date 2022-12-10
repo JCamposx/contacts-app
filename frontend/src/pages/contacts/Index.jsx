@@ -1,42 +1,55 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import FlashMessage from "react-flash-message";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
 import Spinner from "../../components/Spinner";
+import { AlertContext } from "../../context/AlertContext";
 import routes from "../../routes/routes.js";
+import colorType from "../../assets/js/colorType";
 
 export default function Index() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [flashMessage, setFlashMessage] = useState({
+    type: "",
     message: "",
-    status: false,
   });
+
+  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (localStorage.getItem("flashMessage")) {
       setFlashMessage({
+        type: colorType.info,
         message: localStorage.getItem("flashMessage"),
-        status: true,
       });
+      showAlert();
       localStorage.removeItem("flashMessage");
     }
 
     axios
       .get(routes.contacts._)
-      .then((res) => {
-        setData(res.data);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        setError("Failed loading contacts");
-        setIsLoading(false);
-      });
+      .then((res) => setData(res.data))
+      .catch(() => setError("Failed loading contacts"))
+      .finally(() => setIsLoading(false));
   }, []);
+
+  function handleDelete(id) {
+    axios
+      .delete(`${routes.contacts._}/${id}`)
+      .then(() => {
+        setData(data.filter((item) => item.id !== id));
+        setFlashMessage({
+          type: colorType.danger,
+          message: "Contact deleted successfully",
+        });
+        showAlert();
+      })
+      .catch((e) => console.log(e));
+  }
 
   return (
     <>
@@ -44,19 +57,14 @@ export default function Index() {
       {isLoading ? (
         <Spinner />
       ) : error !== "" ? (
-        <Alert type="danger">{error}</Alert>
+        <Alert type={colorType.danger}>{error}</Alert>
       ) : (
         <>
-          {flashMessage.status ? (
-            <FlashMessage duration={3000} persistOnHover={true}>
-              <Alert type="info">{flashMessage.message}</Alert>
-            </FlashMessage>
-          ) : (
-            <></>
-          )}
+          <Alert type={flashMessage.type}>{flashMessage.message}</Alert>
+
           <div className="row justify-content-center align-items-center mt-3">
             {data.length === 0 ? (
-              <div className="col-md-6 mb-3">
+              <div className="col-md-6 mb-3 text-center">
                 <Card>
                   <p className="card-text">You don't have any contact</p>
                   <NavLink
@@ -78,12 +86,15 @@ export default function Index() {
                         <Button
                           link={true}
                           to="#"
-                          type="primary"
+                          type={colorType.primary}
                           customClass="me-2"
                         >
                           Edit
                         </Button>
-                        <Button link={true} to="#" type="danger">
+                        <Button
+                          type={colorType.danger}
+                          onClick={() => handleDelete(contact.id)}
+                        >
                           Delete
                         </Button>
                       </div>

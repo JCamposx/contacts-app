@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
-export default function Button({ to, type, link, customClass, children }) {
+export default function Button({
+  to,
+  type,
+  link,
+  customClass,
+  onClick,
+  children,
+}) {
   return (
     <>
       {link ? (
@@ -8,7 +15,7 @@ export default function Button({ to, type, link, customClass, children }) {
           {children}
         </Link>
       ) : (
-        <button className={`btn btn-${type} ${customClass}`}>
+        <button className={`btn btn-${type} ${customClass}`} onClick={onClick}>
           {children}
         </button>
       )}

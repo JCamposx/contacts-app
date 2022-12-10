@@ -10,10 +10,8 @@ export function ContactContextProvider(props) {
   });
 
   return (
-    <div>
-      <ContactContext.Provider value={{ contact, setContact }}>
-        {props.children}
-      </ContactContext.Provider>
-    </div>
+    <ContactContext.Provider value={{ contact, setContact }}>
+      {props.children}
+    </ContactContext.Provider>
   );
 }

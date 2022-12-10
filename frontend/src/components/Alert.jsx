@@ -1,16 +1,20 @@
+import { useContext } from "react";
+import { AlertContext } from "../context/AlertContext";
+
 export default function Alert({ type, children }) {
+  const { alert, hideAlert } = useContext(AlertContext);
+
   return (
-    <div
-      className={`alert alert-dismissible fade show alert-${type}`}
-      role="alert"
-    >
-      {children}
-      <button
-        type="button"
-        className="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
+    <>
+      {alert && (
+        <div
+          className={`alert alert-${type} alert-dismissible fade show`}
+          role="alert"
+        >
+          {children}
+          <button onClick={hideAlert} className="btn-close"></button>
+        </div>
+      )}
+    </>
   );
 }
