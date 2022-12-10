@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
@@ -23,24 +24,39 @@ export default function Index() {
         <Alert type="danger">{error}</Alert>
       ) : (
         <div className="row justify-content-center align-items-center mt-3">
-          {data.map((contact) => {
-            return (
-              <div key={contact.id} className="col-md-4 mb-3">
-                <Card title={contact.name}>
-                  <p className="card-text">{contact.description}</p>
-                  <p className="card-text">{contact.phone_number}</p>
-                  <div>
-                    <Button to="#" type="dark">
-                      Edit
-                    </Button>
-                    <Button to="#" type="danger">
-                      Delete
-                    </Button>
-                  </div>
-                </Card>
-              </div>
-            );
-          })}
+          {data.length === 0 ? (
+            <div className="col-md-6 mb-3">
+              <Card>
+                <p className="card-text">You don't have any contact</p>
+                <NavLink
+                  to={routes.contacts.create}
+                  style={{ textDecoration: "none" }}
+                >
+                  Add one!
+                </NavLink>
+              </Card>
+            </div>
+          ) : (
+            data.map((contact) => {
+              return (
+                <div key={contact.id} className="col-md-4 mb-3">
+                  <Card title={contact.name}>
+                    <p className="card-text">{contact.description}</p>
+                    <p className="card-text">{contact.phone_number}</p>
+                    <div>
+                      <Button to="#" type="dark">
+                        Edit
+                      </Button>
+                      <Button to="#" type="danger">
+                        Delete
+                      </Button>
+                    </div>
+                  </Card>
+                </div>
+              );
+            })
+          )}
+          {/* {} */}
         </div>
       )}
     </div>
