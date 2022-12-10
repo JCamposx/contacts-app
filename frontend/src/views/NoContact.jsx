@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import Card from "../components/Card";
-import routes from "../routes/routes";
+import { routes } from "../routes/routes";
 
 export default function NoContact() {
   return (

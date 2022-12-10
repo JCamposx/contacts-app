@@ -4,7 +4,7 @@ import colorType from "../assets/js/colorType";
 import Alert from "../components/Alert";
 import Spinner from "../components/Spinner";
 import { AlertContext } from "../context/AlertContext";
-import routes from "../routes/routes.js";
+import { routes } from "../routes/routes.js";
 import ContactList from "../views/ContactList";
 import NoContact from "../views/NoContact";
 

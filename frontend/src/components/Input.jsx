@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 export default function Input({
   id,
   type,

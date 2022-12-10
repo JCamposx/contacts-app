@@ -1,6 +1,7 @@
 import colorType from "../assets/js/colorType";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import { routes, url } from "../routes/routes";
 
 export default function ContactList({
   contacts,
@@ -18,7 +19,7 @@ export default function ContactList({
               <div>
                 <Button
                   link={true}
-                  to="#"
+                  to={url(routes.contacts.base, contact.id)}
                   type={colorType.primary}
                   customClass="me-2"
                 >

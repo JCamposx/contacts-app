@@ -4,7 +4,7 @@ import colorType from "../../assets/js/colorType";
 import Alert from "../../components/Alert";
 import Spinner from "../../components/Spinner";
 import { AlertContext } from "../../context/AlertContext";
-import routes from "../../routes/routes.js";
+import { routes } from "../../routes/routes";
 import ContactList from "../../views/ContactList";
 import NoContact from "../../views/NoContact";
 
@@ -20,9 +20,18 @@ export default function Index() {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
+    if (localStorage.getItem("flashMessage")) {
+      setFlashMessage({
+        type: colorType.info,
+        message: localStorage.getItem("flashMessage"),
+      });
+      showAlert();
+      localStorage.removeItem("flashMessage");
+    }
+
     axios
       .get(routes.api.contacts.base)
-      .then((res) => setData(res.data))
+      .then((res) => {setData(res.data)})
       .catch(() => setError("Failed loading contacts"))
       .finally(() => setIsLoading(false));
   }, []);

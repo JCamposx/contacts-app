@@ -1,17 +1,39 @@
 import axios from "axios";
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import colorType from "../../assets/js/colorType";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
+import Alert from "../../components/Alert";
 import FormControl from "../../components/FormControl";
-import { ContactContext } from "../../context/ContactContext";
-import { routes } from "../../routes/routes";
+import { AlertContext } from "../../context/AlertContext";
+import { routes, url } from "../../routes/routes";
 
-export default function Create() {
-  const { contact, setContact } = useContext(ContactContext);
+export default function Edit() {
+  const [contact, setContact] = useState({
+    name: "",
+    description: "",
+    phone_number: "",
+  });
+
+  const { id } = useParams();
 
   const navigate = useNavigate();
+
+  const { showAlert } = useContext(AlertContext);
+
+  useEffect(() => {
+    axios
+      .get(url(routes.api.contacts.base, id))
+      .then((res) => {
+        setContact({
+          name: res.data.name,
+          description: res.data.description,
+          phone_number: res.data.phone_number,
+        });
+      })
+      .catch(() => showAlert());
+  }, []);
 
   function handleChange(e) {
     setContact({
@@ -23,24 +45,23 @@ export default function Create() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(contact);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
     axios
-      .post(routes.api.contacts.base, contact)
+      .put(url(routes.api.contacts.base, id), contact)
       .then(() => {
-        localStorage.setItem("flashMessage", "Contact created successfully");
-        navigate(routes.home);
+        localStorage.setItem(
+          "flashMessage",
+          `Contact ${contact.name} updated successfully`
+        );
+        navigate(-1)
       })
-      .catch((e) => console.log(e));
+      .catch(() => console.log("ERROR"));
   }
 
   return (
     <>
-      <h1>New contact</h1>
+      <h1>Edit contact</h1>
+
+      <Alert type={colorType.danger}>Failed loading contact</Alert>
 
       <Form onSubmit={handleSubmit}>
         <FormControl

@@ -4,8 +4,9 @@ import { AlertContextProvider } from "./context/AlertContext";
 import { ContactContextProvider } from "./context/ContactContext";
 import ContactsCreate from "./pages/contacts/Create";
 import ContactsIndex from "./pages/contacts/Index";
+import ContactsEdit from "./pages/contacts/Edit";
 import Home from "./pages/Home";
-import routes from "./routes/routes";
+import { routes, url } from "./routes/routes";
 
 function App() {
   return (
@@ -24,6 +25,10 @@ function App() {
                     <ContactsCreate />
                   </ContactContextProvider>
                 }
+              />
+              <Route
+                path={url(routes.contacts.base, ":id")}
+                element={<ContactsEdit />}
               />
               <Route path="*" element={<h1>404 Not Found</h1>} />
             </Routes>
