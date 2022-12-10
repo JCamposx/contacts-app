@@ -14,7 +14,7 @@ export default function Index() {
 
   useEffect(() => {
     axios
-      .get(routes.contacts.index)
+      .get(routes.contacts._)
       .then((res) => {
         setData(res.data);
         setIsLoading(false);
@@ -50,11 +50,11 @@ export default function Index() {
             data.map((contact) => {
               return (
                 <div key={contact.id} className="col-md-4 mb-3">
-                  <Card title={contact.name}>
+                  <Card title={contact.name} customClass="text-center">
                     <p className="card-text">{contact.description}</p>
                     <p className="card-text">{contact.phone_number}</p>
                     <div>
-                      <Button to="#" type="dark">
+                      <Button to="#" type="primary" customClass="me-2">
                         Edit
                       </Button>
                       <Button to="#" type="danger">

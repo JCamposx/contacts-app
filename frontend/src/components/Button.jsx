@@ -1,16 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function Button({ to, type, submit, children }) {
+export default function Button({ to, type, submit, customClass, children }) {
   return (
     <>
       {submit ? (
-        <button className={`ms-1 me-1 btn btn-${type}`} type="submit">
+        <button className={`btn btn-${type} ${customClass}`} type="submit">
           {children}
         </button>
       ) : (
-        <NavLink to={to} className={`ms-1 me-1 btn btn-${type}`}>
+        <Link to={to} className={`btn btn-${type} ${customClass}`}>
           {children}
-        </NavLink>
+        </Link>
       )}
     </>
   );
