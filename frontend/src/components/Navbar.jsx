@@ -7,7 +7,7 @@ export default function Navbar() {
       <div className="container-fluid">
         <NavLink className="navbar-brand" to={routes.home}>
           <img
-            src="/logo.png"
+            src="/images/logo.png"
             alt="Logo"
             width="24"
             height="24"
@@ -33,6 +33,11 @@ export default function Navbar() {
           id="navbarNav"
         >
           <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink className="nav-link" to={routes.contacts.base}>
+                My contacts
+              </NavLink>
+            </li>
             <li className="nav-item">
               <NavLink className="nav-link" to={routes.contacts.create}>
                 New contact

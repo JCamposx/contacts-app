@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import Alert from "../../components/Alert";
-import Button from "../../components/Button";
-import Card from "../../components/Card";
-import Spinner from "../../components/Spinner";
-import { AlertContext } from "../../context/AlertContext";
-import routes from "../../routes/routes.js";
-import colorType from "../../assets/js/colorType";
+import Alert from "../components/Alert";
+import Button from "../components/Button";
+import Card from "../components/Card";
+import Spinner from "../components/Spinner";
+import { AlertContext } from "../context/AlertContext";
+import routes from "../routes/routes.js";
+import colorType from "../assets/js/colorType";
 
-export default function Index() {
+export default function Home() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -21,8 +21,17 @@ export default function Index() {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
+    if (localStorage.getItem("flashMessage")) {
+      setFlashMessage({
+        type: colorType.info,
+        message: localStorage.getItem("flashMessage"),
+      });
+      showAlert();
+      localStorage.removeItem("flashMessage");
+    }
+
     axios
-      .get(routes.api.contacts.base)
+      .get(routes.api.contacts.latest)
       .then((res) => setData(res.data))
       .catch(() => setError("Failed loading contacts"))
       .finally(() => setIsLoading(false));
@@ -44,7 +53,7 @@ export default function Index() {
 
   return (
     <>
-      <h1>Contacts</h1>
+      <h1>Home</h1>
       {isLoading ? (
         <Spinner />
       ) : error !== "" ? (
@@ -69,7 +78,7 @@ export default function Index() {
             ) : (
               data.map((contact) => {
                 return (
-                  <div key={contact.id} className="col-md-6 mb-3">
+                  <div key={contact.id} className="col-md-4 mb-3">
                     <Card title={contact.name} customClass="text-center">
                       <p className="card-text">{contact.description}</p>
                       <p className="card-text">{contact.phone_number}</p>

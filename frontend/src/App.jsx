@@ -2,8 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { AlertContextProvider } from "./context/AlertContext";
 import { ContactContextProvider } from "./context/ContactContext";
-import ContactsCreatePage from "./pages/contacts/Create";
-import ContactsIndexPage from "./pages/contacts/Index";
+import ContactsCreate from "./pages/contacts/Create";
+import ContactsIndex from "./pages/contacts/Index";
+import Home from "./pages/Home";
 import routes from "./routes/routes";
 
 function App() {
@@ -14,12 +15,13 @@ function App() {
         <div className="container">
           <AlertContextProvider>
             <Routes>
-              <Route path={routes.home} element={<ContactsIndexPage />} />
+              <Route path={routes.home} element={<Home />} />
+              <Route path={routes.contacts.base} element={<ContactsIndex />} />
               <Route
                 path={routes.contacts.create}
                 element={
                   <ContactContextProvider>
-                    <ContactsCreatePage />
+                    <ContactsCreate />
                   </ContactContextProvider>
                 }
               />
