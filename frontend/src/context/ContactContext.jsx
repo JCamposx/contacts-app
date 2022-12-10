@@ -1,6 +1,4 @@
-import axios from "axios";
 import { createContext, useState } from "react";
-import routes from "../routes/routes";
 
 export const ContactContext = createContext();
 

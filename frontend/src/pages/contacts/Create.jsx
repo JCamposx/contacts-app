@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormControl from "../../components/FormControl";
 import { ContactContext } from "../../context/ContactContext";
 import routes from "../../routes/routes";
-import { redirect, useNavigate } from "react-router-dom";
 
 export default function Create() {
   const { contact, setContact } = useContext(ContactContext);
@@ -31,8 +31,8 @@ export default function Create() {
     axios
       .post(routes.contacts._, contact)
       .then((res) => {
-        console.log(res.data)
-        navigate(routes.home)
+        localStorage.setItem("flashMessage", "Contact created successfully");
+        navigate(routes.home);
       })
       .catch((e) => console.log(e));
   }
