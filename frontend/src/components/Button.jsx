@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 
-export default function Button({ to, type, submit, customClass, children }) {
+export default function Button({ to, type, link, customClass, children }) {
   return (
     <>
-      {submit ? (
-        <button className={`btn btn-${type} ${customClass}`} type="submit">
-          {children}
-        </button>
-      ) : (
+      {link ? (
         <Link to={to} className={`btn btn-${type} ${customClass}`}>
           {children}
         </Link>
+      ) : (
+        <button className={`btn btn-${type} ${customClass}`}>
+          {children}
+        </button>
       )}
     </>
   );

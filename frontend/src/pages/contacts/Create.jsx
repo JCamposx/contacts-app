@@ -66,7 +66,7 @@ export default function Create() {
           onInputChange={handleChange}
         />
 
-        <Button type="primary" customClass="mt-2" submit={true}>
+        <Button type="primary" customClass="mt-2">
           Submit
         </Button>
       </Form>

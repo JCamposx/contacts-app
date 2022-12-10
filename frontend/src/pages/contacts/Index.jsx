@@ -75,10 +75,15 @@ export default function Index() {
                       <p className="card-text">{contact.description}</p>
                       <p className="card-text">{contact.phone_number}</p>
                       <div>
-                        <Button to="#" type="primary" customClass="me-2">
+                        <Button
+                          link={true}
+                          to="#"
+                          type="primary"
+                          customClass="me-2"
+                        >
                           Edit
                         </Button>
-                        <Button to="#" type="danger">
+                        <Button link={true} to="#" type="danger">
                           Delete
                         </Button>
                       </div>
