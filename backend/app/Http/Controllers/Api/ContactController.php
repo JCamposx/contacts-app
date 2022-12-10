@@ -15,7 +15,19 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::all();
+        $contacts = Contact::orderBy('name')->get();
+
+        return response()->json($contacts, 200);
+    }
+
+    /**
+     * Display a listing of latest records of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexLatest()
+    {
+        $contacts = Contact::latest()->take(12)->get();
 
         return response()->json($contacts, 200);
     }
