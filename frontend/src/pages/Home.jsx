@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import colorType from "../assets/js/colorType";
 import Alert from "../components/Alert";
-import Button from "../components/Button";
-import Card from "../components/Card";
 import Spinner from "../components/Spinner";
 import { AlertContext } from "../context/AlertContext";
 import routes from "../routes/routes.js";
-import colorType from "../assets/js/colorType";
+import ContactList from "../views/ContactList";
+import NoContact from "../views/NoContact";
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -64,44 +63,13 @@ export default function Home() {
 
           <div className="row justify-content-center align-items-center mt-3">
             {data.length === 0 ? (
-              <div className="col-md-6 mb-3 text-center">
-                <Card>
-                  <p className="card-text">You don't have any contact</p>
-                  <NavLink
-                    to={routes.contacts.create}
-                    style={{ textDecoration: "none" }}
-                  >
-                    Add one!
-                  </NavLink>
-                </Card>
-              </div>
+              <NoContact />
             ) : (
-              data.map((contact) => {
-                return (
-                  <div key={contact.id} className="col-md-4 mb-3">
-                    <Card title={contact.name} customClass="text-center">
-                      <p className="card-text">{contact.description}</p>
-                      <p className="card-text">{contact.phone_number}</p>
-                      <div>
-                        <Button
-                          link={true}
-                          to="#"
-                          type={colorType.primary}
-                          customClass="me-2"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          type={colorType.danger}
-                          onClick={() => handleDelete(contact.id)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </Card>
-                  </div>
-                );
-              })
+              <ContactList
+                contacts={data}
+                onDeleteContact={handleDelete}
+                customClass="col-md-4"
+              />
             )}
           </div>
         </>

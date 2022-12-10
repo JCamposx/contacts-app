@@ -4,7 +4,7 @@ import routes from "../routes/routes";
 export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
-      <div className="container-fluid">
+      <div className="container">
         <NavLink className="navbar-brand" to={routes.home}>
           <img
             src="/images/logo.png"
