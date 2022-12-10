@@ -1,14 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Card from "../../components/Card";
+import routes from "../../routes/routes.js";
 
 export default function Index() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL;
-
-    axios.get(API_URL + "contacts").then((res) => setData(res.data));
+    axios.get(routes.contacts.index).then((res) => setData(res.data));
   }, []);
 
   return (

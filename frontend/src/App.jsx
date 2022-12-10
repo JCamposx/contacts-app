@@ -5,15 +5,15 @@ import ContactIndexPage from "./pages/contact/Index";
 function App() {
   return (
     <>
-      <Navbar />
-      <div className="container">
-        <BrowserRouter>
+      <BrowserRouter>
+        <Navbar />
+        <div className="container">
           <Routes>
             <Route path="/" element={<ContactIndexPage />} />
             <Route path="*" element={<h1>404 Not Found</h1>} />
           </Routes>
-        </BrowserRouter>
-      </div>
+        </div>
+      </BrowserRouter>
     </>
   );
 }
