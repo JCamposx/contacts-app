@@ -31,7 +31,7 @@ export default function Index() {
     }
 
     axios
-      .get(routes.contacts._)
+      .get(routes.contacts.base)
       .then((res) => setData(res.data))
       .catch(() => setError("Failed loading contacts"))
       .finally(() => setIsLoading(false));
@@ -39,7 +39,7 @@ export default function Index() {
 
   function handleDelete(id) {
     axios
-      .delete(`${routes.contacts._}/${id}`)
+      .delete(`${routes.contacts.base}/${id}`)
       .then(() => {
         setData(data.filter((item) => item.id !== id));
         setFlashMessage({

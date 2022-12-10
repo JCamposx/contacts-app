@@ -30,7 +30,7 @@ export default function Create() {
     e.preventDefault();
 
     axios
-      .post(routes.contacts._, contact)
+      .post(routes.contacts.base, contact)
       .then((res) => {
         localStorage.setItem("flashMessage", "Contact created successfully");
         navigate(routes.home);
