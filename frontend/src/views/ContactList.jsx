@@ -19,7 +19,7 @@ export default function ContactList({
               <div>
                 <Button
                   link={true}
-                  to={url(routes.contacts.base, contact.id)}
+                  to={url(routes.contacts.edit, { id: contact.id })}
                   type={colorType.primary}
                   customClass="me-2"
                 >

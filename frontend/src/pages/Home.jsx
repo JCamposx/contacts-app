@@ -4,7 +4,7 @@ import colorType from "../assets/js/colorType";
 import Alert from "../components/Alert";
 import Spinner from "../components/Spinner";
 import { AlertContext } from "../context/AlertContext";
-import { routes } from "../routes/routes.js";
+import { routes, url } from "../routes/routes.js";
 import ContactList from "../views/ContactList";
 import NoContact from "../views/NoContact";
 
@@ -41,7 +41,7 @@ export default function Home() {
 
   function handleDelete(id) {
     axios
-      .delete(`${routes.api.contacts.base}/${id}`)
+      .delete(url(routes.api.contacts.delete, { id }))
       .then(() => {
         setData(data.filter((item) => item.id !== id));
         setFlashMessage({

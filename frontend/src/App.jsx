@@ -3,8 +3,8 @@ import Navbar from "./components/Navbar";
 import { AlertContextProvider } from "./context/AlertContext";
 import { ContactContextProvider } from "./context/ContactContext";
 import ContactsCreate from "./pages/contacts/Create";
-import ContactsIndex from "./pages/contacts/Index";
 import ContactsEdit from "./pages/contacts/Edit";
+import ContactsIndex from "./pages/contacts/Index";
 import Home from "./pages/Home";
 import { routes, url } from "./routes/routes";
 
@@ -17,7 +17,7 @@ function App() {
           <AlertContextProvider>
             <Routes>
               <Route path={routes.home} element={<Home />} />
-              <Route path={routes.contacts.base} element={<ContactsIndex />} />
+              <Route path={routes.contacts.index} element={<ContactsIndex />} />
               <Route
                 path={routes.contacts.create}
                 element={
@@ -27,7 +27,7 @@ function App() {
                 }
               />
               <Route
-                path={url(routes.contacts.base, ":id")}
+                path={url(routes.contacts.edit)}
                 element={<ContactsEdit />}
               />
               <Route path="*" element={<h1>404 Not Found</h1>} />

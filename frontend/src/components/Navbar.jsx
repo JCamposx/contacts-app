@@ -34,7 +34,7 @@ export default function Navbar() {
         >
           <ul className="navbar-nav">
             <li className="nav-item">
-              <NavLink className="nav-link" to={routes.contacts.base}>
+              <NavLink className="nav-link" to={routes.contacts.index}>
                 My contacts
               </NavLink>
             </li>

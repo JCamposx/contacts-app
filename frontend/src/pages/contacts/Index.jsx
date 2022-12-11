@@ -4,7 +4,7 @@ import colorType from "../../assets/js/colorType";
 import Alert from "../../components/Alert";
 import Spinner from "../../components/Spinner";
 import { AlertContext } from "../../context/AlertContext";
-import { routes } from "../../routes/routes";
+import { routes, url } from "../../routes/routes";
 import ContactList from "../../views/ContactList";
 import NoContact from "../../views/NoContact";
 
@@ -30,7 +30,7 @@ export default function Index() {
     }
 
     axios
-      .get(routes.api.contacts.base)
+      .get(routes.api.contacts.index)
       .then((res) => {
         setData(res.data);
       })
@@ -43,7 +43,7 @@ export default function Index() {
 
   function handleDelete(id) {
     axios
-      .delete(`${routes.api.contacts.base}/${id}`)
+      .delete(url(routes.api.contacts.delete, { id }))
       .then(() => {
         setData(data.filter((item) => item.id !== id));
         setFlashMessage({

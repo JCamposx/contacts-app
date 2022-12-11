@@ -2,9 +2,9 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import colorType from "../../assets/js/colorType";
+import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
-import Alert from "../../components/Alert";
 import FormControl from "../../components/FormControl";
 import { AlertContext } from "../../context/AlertContext";
 import { routes, url } from "../../routes/routes";
@@ -15,6 +15,7 @@ export default function Edit() {
     description: "",
     phone_number: "",
   });
+  const [error, setError] = useState("");
 
   const { id } = useParams();
 
@@ -24,7 +25,7 @@ export default function Edit() {
 
   useEffect(() => {
     axios
-      .get(url(routes.api.contacts.base, id))
+      .get(url(routes.api.contacts.show, { id }))
       .then((res) => {
         setContact({
           name: res.data.name,
@@ -32,7 +33,10 @@ export default function Edit() {
           phone_number: res.data.phone_number,
         });
       })
-      .catch(() => showAlert());
+      .catch(() => {
+        setError("Failed loading contact");
+        showAlert();
+      });
   }, []);
 
   function handleChange(e) {
@@ -46,22 +50,25 @@ export default function Edit() {
     e.preventDefault();
 
     axios
-      .put(url(routes.api.contacts.base, id), contact)
+      .put(url(routes.api.contacts.update, { id }), contact)
       .then(() => {
         localStorage.setItem(
           "flashMessage",
           `Contact ${contact.name} updated successfully`
         );
-        navigate(-1)
+        navigate(-1);
       })
-      .catch(() => console.log("ERROR"));
+      .catch(() => {
+        setError("Failed updating contact");
+        showAlert();
+      });
   }
 
   return (
     <>
       <h1>Edit contact</h1>
 
-      <Alert type={colorType.danger}>Failed loading contact</Alert>
+      <Alert type={colorType.danger}>{error}</Alert>
 
       <Form onSubmit={handleSubmit}>
         <FormControl

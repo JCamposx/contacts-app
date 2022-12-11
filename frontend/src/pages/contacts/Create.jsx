@@ -1,15 +1,20 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import colorType from "../../assets/js/colorType";
+import Alert from "../../components/Alert";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormControl from "../../components/FormControl";
+import { AlertContext } from "../../context/AlertContext";
 import { ContactContext } from "../../context/ContactContext";
 import { routes } from "../../routes/routes";
 
 export default function Create() {
+  const [error, setError] = useState("");
+
   const { contact, setContact } = useContext(ContactContext);
+  const { showAlert } = useContext(AlertContext);
 
   const navigate = useNavigate();
 
@@ -23,24 +28,23 @@ export default function Create() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(contact);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
     axios
-      .post(routes.api.contacts.base, contact)
+      .post(routes.api.contacts.store, contact)
       .then(() => {
         localStorage.setItem("flashMessage", "Contact created successfully");
         navigate(routes.home);
       })
-      .catch((e) => console.log(e));
+      .catch(() => {
+        setError("Failed storing new contact");
+        showAlert();
+      });
   }
 
   return (
     <>
       <h1>New contact</h1>
+
+      <Alert type={colorType.danger}>{error}</Alert>
 
       <Form onSubmit={handleSubmit}>
         <FormControl
