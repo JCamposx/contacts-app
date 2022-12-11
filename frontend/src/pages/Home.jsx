@@ -32,7 +32,10 @@ export default function Home() {
     axios
       .get(routes.api.contacts.latest)
       .then((res) => setData(res.data))
-      .catch(() => setError("Failed loading contacts"))
+      .catch(() => {
+        setError("Failed loading contacts");
+        showAlert();
+      })
       .finally(() => setIsLoading(false));
   }, []);
 

@@ -31,8 +31,13 @@ export default function Index() {
 
     axios
       .get(routes.api.contacts.base)
-      .then((res) => {setData(res.data)})
-      .catch(() => setError("Failed loading contacts"))
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch(() => {
+        setError("Failed loading contacts");
+        showAlert();
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
