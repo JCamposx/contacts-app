@@ -5,6 +5,7 @@ export default function FormControl({
   label,
   inputType,
   inputValue,
+  errorMessage,
   onInputChange,
 }) {
   return (
@@ -18,6 +19,9 @@ export default function FormControl({
         value={inputValue}
         onChange={onInputChange}
       />
+      <div id="emailHelp" className="form-text text-danger">
+        {errorMessage}
+      </div>
     </div>
   );
 }

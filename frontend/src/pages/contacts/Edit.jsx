@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormControl from "../../components/FormControl";
 import { AlertContext } from "../../context/AlertContext";
+import { ContactRequestErrorContext } from "../../context/ContactRequestErrorContext";
 import { routes, url } from "../../routes/routes";
 
 export default function Edit() {
@@ -22,9 +23,13 @@ export default function Edit() {
   const navigate = useNavigate();
 
   const { showAlert, hideAlert } = useContext(AlertContext);
+  const { requestError, handleRequestErrors } = useContext(
+    ContactRequestErrorContext
+  );
 
   useEffect(() => {
     hideAlert();
+    handleRequestErrors({});
 
     axios
       .get(url(routes.api.contacts.show, { id }))
@@ -60,9 +65,8 @@ export default function Edit() {
         );
         navigate(-1);
       })
-      .catch(() => {
-        setError("Failed updating contact");
-        showAlert();
+      .catch((e) => {
+        handleRequestErrors(e.response.data.errors);
       });
   }
 
@@ -79,6 +83,7 @@ export default function Edit() {
           inputType="text"
           inputValue={contact.name}
           onInputChange={handleChange}
+          errorMessage={requestError.name}
         />
 
         <FormControl
@@ -87,6 +92,7 @@ export default function Edit() {
           inputType="text"
           inputValue={contact.description}
           onInputChange={handleChange}
+          errorMessage={requestError.description}
         />
 
         <FormControl
@@ -95,6 +101,7 @@ export default function Edit() {
           inputType="text"
           inputValue={contact.phone_number}
           onInputChange={handleChange}
+          errorMessage={requestError.phone_number}
         />
 
         <Button type={colorType.primary} customClass="mt-2">
