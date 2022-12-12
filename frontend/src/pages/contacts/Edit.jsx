@@ -21,9 +21,11 @@ export default function Edit() {
 
   const navigate = useNavigate();
 
-  const { showAlert } = useContext(AlertContext);
+  const { showAlert, hideAlert } = useContext(AlertContext);
 
   useEffect(() => {
+    hideAlert();
+
     axios
       .get(url(routes.api.contacts.show, { id }))
       .then((res) => {

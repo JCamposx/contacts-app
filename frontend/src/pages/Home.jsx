@@ -17,9 +17,11 @@ export default function Home() {
     message: "",
   });
 
-  const { showAlert } = useContext(AlertContext);
+  const { showAlert, hideAlert } = useContext(AlertContext);
 
   useEffect(() => {
+    hideAlert();
+
     if (localStorage.getItem("flashMessage")) {
       setFlashMessage({
         type: colorType.info,

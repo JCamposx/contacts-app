@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import colorType from "../../assets/js/colorType";
@@ -14,9 +15,13 @@ export default function Create() {
   const [error, setError] = useState("");
 
   const { contact, setContact } = useContext(ContactContext);
-  const { showAlert } = useContext(AlertContext);
+  const { showAlert, hideAlert } = useContext(AlertContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    hideAlert();
+  }, []);
 
   function handleChange(e) {
     setContact({
