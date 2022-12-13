@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\AuthRegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(AuthRegisterRequest $request)
+    public function register(RegisterRequest $request)
     {
         $data = $request->validated();
 
@@ -27,13 +27,13 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validated();
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Incorrect email or password.'
+                'message' => 'Incorrect email or password'
             ], 401);
         }
 
@@ -52,7 +52,7 @@ class AuthController extends Controller
         Auth::user()->token()->revoke();
 
         return response()->json([
-            'message' => 'Logout successfully.'
+            'message' => 'Logout successfully'
         ], 200);
     }
 }
