@@ -7,7 +7,16 @@ export const routes = {
     create: "/contacts/create",
     edit: "/contacts/:id/edit",
   },
+  auth: {
+    login: "/login",
+    register: "/register",
+  },
   api: {
+    auth: {
+      login: API + "/oauth/login",
+      register: API + "/oauth/register",
+      logout: API + "/oauth/logout",
+    },
     contacts: {
       index: API + "/contacts",
       latest: API + "/contacts/latest",

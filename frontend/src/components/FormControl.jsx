@@ -18,6 +18,7 @@ export default function FormControl({
         type={inputType}
         value={inputValue}
         onChange={onInputChange}
+        customClass={errorMessage ? "border-danger border-5" : ""}
       />
       <div id="emailHelp" className="form-text text-danger">
         {errorMessage}
