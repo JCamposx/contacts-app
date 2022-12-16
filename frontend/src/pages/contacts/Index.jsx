@@ -4,6 +4,7 @@ import colorType from "../../assets/js/colorType";
 import Alert from "../../components/Alert";
 import Spinner from "../../components/Spinner";
 import { AlertContext } from "../../context/AlertContext";
+import { AuthContext } from "../../context/AuthContext";
 import { routes, url } from "../../routes/routes";
 import ContactList from "../../views/ContactList";
 import NoContact from "../../views/NoContact";
@@ -18,6 +19,7 @@ export default function Index() {
   });
 
   const { showAlert, hideAlert } = useContext(AlertContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     hideAlert();
@@ -32,11 +34,14 @@ export default function Index() {
     }
 
     axios
-      .get(routes.api.contacts.index)
+      .get(routes.api.contacts.index, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
       .then((res) => {
         setData(res.data);
       })
       .catch(() => {
+        console.log( `Bearer ${user.token}` );
         setError("Failed loading contacts");
         showAlert();
       })

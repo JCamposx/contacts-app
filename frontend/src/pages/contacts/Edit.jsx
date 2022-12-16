@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormControl from "../../components/FormControl";
 import { AlertContext } from "../../context/AlertContext";
+import { AuthContext } from "../../context/AuthContext";
 import { ContactRequestErrorContext } from "../../context/ContactRequestErrorContext";
 import { routes, url } from "../../routes/routes";
 
@@ -22,6 +23,7 @@ export default function Edit() {
 
   const navigate = useNavigate();
 
+  const { user } = useContext(AuthContext);
   const { showAlert, hideAlert } = useContext(AlertContext);
   const { requestError, handleRequestErrors } = useContext(
     ContactRequestErrorContext
@@ -32,7 +34,9 @@ export default function Edit() {
     handleRequestErrors({});
 
     axios
-      .get(url(routes.api.contacts.show, { id }))
+      .get(url(routes.api.contacts.show, { id }), {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
       .then((res) => {
         setContact({
           name: res.data.name,
@@ -57,7 +61,9 @@ export default function Edit() {
     e.preventDefault();
 
     axios
-      .put(url(routes.api.contacts.update, { id }), contact)
+      .put(url(routes.api.contacts.update, { id }), contact, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
       .then(() => {
         localStorage.setItem(
           "flashMessage",

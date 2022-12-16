@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormControl from "../../components/FormControl";
 import { AlertContext } from "../../context/AlertContext";
+import { AuthContext } from "../../context/AuthContext";
 import { ContactContext } from "../../context/ContactContext";
 import { ContactRequestErrorContext } from "../../context/ContactRequestErrorContext";
 import { routes } from "../../routes/routes";
@@ -14,8 +15,9 @@ import { routes } from "../../routes/routes";
 export default function Create() {
   const [error, setError] = useState("");
 
+  const { user } = useContext(AuthContext);
   const { contact, setContact } = useContext(ContactContext);
-  const { showAlert, hideAlert } = useContext(AlertContext);
+  const { hideAlert } = useContext(AlertContext);
   const { requestError, handleRequestErrors } = useContext(
     ContactRequestErrorContext
   );
@@ -38,7 +40,9 @@ export default function Create() {
     e.preventDefault();
 
     axios
-      .post(routes.api.contacts.store, contact)
+      .post(routes.api.contacts.store, contact, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
       .then(() => {
         localStorage.setItem("flashMessage", "Contact created successfully");
         navigate(routes.home);

@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import colorType from "../../assets/js/colorType";
 import Alert from "../../components/Alert";
@@ -8,6 +7,7 @@ import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormControl from "../../components/FormControl";
 import { AlertContext } from "../../context/AlertContext";
+import { AuthContext } from "../../context/AuthContext";
 import { routes } from "../../routes/routes";
 
 export default function Login() {
@@ -24,6 +24,7 @@ export default function Login() {
     message: "",
   });
 
+  const { setUser } = useContext(AuthContext);
   const { showAlert, hideAlert } = useContext(AlertContext);
 
   const navigate = useNavigate();
@@ -53,10 +54,9 @@ export default function Login() {
     axios
       .post(routes.api.auth.login, credentials)
       .then((res) => {
-        hideAlert();
-        // console.log("LOGIN SUCCESS");
-        // console.log(res.data)
-        // localStorage.setItem("flashMessage", "Contact created successfully");
+        setUser(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data));
+        localStorage.setItem("flashMessage", "Login successfully");
         navigate(routes.home);
       })
       .catch((e) => {
