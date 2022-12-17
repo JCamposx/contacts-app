@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreContactRequest;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -15,7 +16,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::orderBy('name')->get();
+        $contacts = Auth::user()->contacts()->orderBy('name')->get();
 
         return response()->json($contacts, 200);
     }
@@ -27,7 +28,7 @@ class ContactController extends Controller
      */
     public function indexLatest()
     {
-        $contacts = Contact::latest()->take(12)->get();
+        $contacts = Auth::user()->contacts()->latest()->take(12)->get();
 
         return response()->json($contacts, 200);
     }
@@ -42,7 +43,7 @@ class ContactController extends Controller
     {
         $data = $request->validated();
 
-        Contact::create($data);
+        Auth::user()->contacts()->create($data);
 
         return response()->json($data, 201);
     }
@@ -55,6 +56,8 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
+        $this->authorize('view', $contact);
+
         return response()->json($contact, 200);
     }
 
@@ -67,6 +70,8 @@ class ContactController extends Controller
      */
     public function update(StoreContactRequest $request, Contact $contact)
     {
+        $this->authorize('update', $contact);
+
         $data = $request->validated();
 
         $contact->update($data);
@@ -82,6 +87,8 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
+        $this->authorize('delete', $contact);
+
         $contact->delete();
 
         return response()->json([], 204);
