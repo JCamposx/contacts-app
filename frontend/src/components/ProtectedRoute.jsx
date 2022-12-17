@@ -1,7 +1,7 @@
+import { AuthContext } from "@/context/AuthContext";
+import { routes } from "@/routes/routes";
 import { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { routes } from "../routes/routes";
 
 export default function ProtectedRoute({ isAuthRoute = false, children }) {
   const authRoutes = [routes.auth.login, routes.auth.register];

@@ -1,7 +1,7 @@
-import colorType from "../assets/js/colorType";
-import Button from "../components/Button";
-import Card from "../components/Card";
-import { routes, url } from "../routes/routes";
+import colorType from "@/assets/js/colorType";
+import Button from "@/components/Button";
+import Card from "@/components/Card";
+import { routes, url } from "@/routes/routes";
 
 export default function ContactList({
   contacts,

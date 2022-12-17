@@ -1,8 +1,8 @@
+import { AuthContext } from "@/context/AuthContext";
+import { routes } from "@/routes/routes";
 import axios from "axios";
 import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { routes } from "../routes/routes";
 
 export default function Navbar() {
   const { user, setUser } = useContext(AuthContext);

@@ -1,15 +1,15 @@
+import colorType from "@/assets/js/colorType";
+import Alert from "@/components/Alert";
+import Button from "@/components/Button";
+import Form from "@/components/Form";
+import FormControl from "@/components/FormControl";
+import { AlertContext } from "@/context/AlertContext";
+import { AuthContext } from "@/context/AuthContext";
+import { ContactRequestErrorContext } from "@/context/ContactRequestErrorContext";
+import { routes, url } from "@/routes/routes";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import colorType from "../../assets/js/colorType";
-import Alert from "../../components/Alert";
-import Button from "../../components/Button";
-import Form from "../../components/Form";
-import FormControl from "../../components/FormControl";
-import { AlertContext } from "../../context/AlertContext";
-import { AuthContext } from "../../context/AuthContext";
-import { ContactRequestErrorContext } from "../../context/ContactRequestErrorContext";
-import { routes, url } from "../../routes/routes";
 
 export default function Edit() {
   const [contact, setContact] = useState({

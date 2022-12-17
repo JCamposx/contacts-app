@@ -1,13 +1,13 @@
+import colorType from "@/assets/js/colorType";
+import Alert from "@/components/Alert";
+import Spinner from "@/components/Spinner";
+import { AlertContext } from "@/context/AlertContext";
+import { AuthContext } from "@/context/AuthContext";
+import { routes, url } from "@/routes/routes.js";
+import ContactList from "@/views/ContactList";
+import NoContact from "@/views/NoContact";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import colorType from "../assets/js/colorType";
-import Alert from "../components/Alert";
-import Spinner from "../components/Spinner";
-import { AlertContext } from "../context/AlertContext";
-import { AuthContext } from "../context/AuthContext";
-import { routes, url } from "../routes/routes.js";
-import ContactList from "../views/ContactList";
-import NoContact from "../views/NoContact";
 
 export default function Home() {
   const [data, setData] = useState([]);

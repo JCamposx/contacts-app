@@ -1,18 +1,18 @@
+import Navbar from "@/components/Navbar";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { AlertContextProvider } from "@/context/AlertContext";
+import { AuthContextProvider } from "@/context/AuthContext";
+import { ContactContextProvider } from "@/context/ContactContext";
+import { ContactRequestErrorContextProvider } from "@/context/ContactRequestErrorContext";
+import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
+import ContactsCreate from "@/pages/contacts/Create";
+import ContactsEdit from "@/pages/contacts/Edit";
+import ContactsIndex from "@/pages/contacts/Index";
+import Home from "@/pages/Home";
+import NotFound from "@/pages/NotFound";
+import { routes, url } from "@/routes/routes";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { AlertContextProvider } from "./context/AlertContext";
-import { AuthContextProvider } from "./context/AuthContext";
-import { ContactContextProvider } from "./context/ContactContext";
-import { ContactRequestErrorContextProvider } from "./context/ContactRequestErrorContext";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import ContactsCreate from "./pages/contacts/Create";
-import ContactsEdit from "./pages/contacts/Edit";
-import ContactsIndex from "./pages/contacts/Index";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import { routes, url } from "./routes/routes";
 
 function App() {
   return (

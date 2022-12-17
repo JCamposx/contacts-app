@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card from "@/components/Card";
 
 export default function Form({ children, onSubmit }) {
   return (
