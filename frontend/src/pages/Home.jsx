@@ -47,7 +47,9 @@ export default function Home() {
 
   function handleDelete(id) {
     axios
-      .delete(url(routes.api.contacts.delete, { id }))
+      .delete(url(routes.api.contacts.delete, { id }), {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
       .then(() => {
         setData(data.filter((item) => item.id !== id));
         setFlashMessage({

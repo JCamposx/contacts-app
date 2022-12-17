@@ -41,7 +41,7 @@ export default function Index() {
         setData(res.data);
       })
       .catch(() => {
-        console.log( `Bearer ${user.token}` );
+        console.log(`Bearer ${user.token}`);
         setError("Failed loading contacts");
         showAlert();
       })
@@ -50,7 +50,9 @@ export default function Index() {
 
   function handleDelete(id) {
     axios
-      .delete(url(routes.api.contacts.delete, { id }))
+      .delete(url(routes.api.contacts.delete, { id }), {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
       .then(() => {
         setData(data.filter((item) => item.id !== id));
         setFlashMessage({

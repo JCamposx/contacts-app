@@ -115,18 +115,14 @@ export default function Login() {
           errorMessage={credentialError.password}
         />
 
-        <div className="row align-items-center">
-          <div className="col-8">
-            <Button type={colorType.primary} customClass="mt-2">
-              Submit
-            </Button>
-          </div>
+        <div className="d-flex justify-content-between align-items-center">
+          <Button type={colorType.primary} customClass="mt-2">
+            Submit
+          </Button>
 
-          <div className="col-4">
-            <Link to={routes.auth.register}>
-              Go to Register
-            </Link>
-          </div>
+          <Link to={routes.auth.register} className="text-decoration-none">
+            Go to Register
+          </Link>
         </div>
       </Form>
     </>
