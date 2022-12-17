@@ -23,6 +23,7 @@ class ContactFactory extends Factory
             'name' => fake()->name(),
             'description' => fake()->text(30),
             'phone_number' => random_int(111_111_111, 999_999_999),
+            'user_id' => 1,
         ];
     }
 }
