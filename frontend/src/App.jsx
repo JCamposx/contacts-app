@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { AlertContextProvider } from "./context/AlertContext";
 import { AuthContextProvider } from "./context/AuthContext";
 import { ContactContextProvider } from "./context/ContactContext";
@@ -21,26 +22,30 @@ function App() {
           <ContactRequestErrorContextProvider>
             <AlertContextProvider>
               <Routes>
-                <Route path={routes.auth.login} element={<Login />} />
-                <Route path={routes.auth.register} element={<Register />} />
-                <Route path={routes.home} element={<Home />} />
-                <Route
-                  path={routes.contacts.index}
-                  element={<ContactsIndex />}
-                />
-                <Route
-                  path={routes.contacts.create}
-                  element={
-                    <ContactContextProvider>
-                      <ContactsCreate />
-                    </ContactContextProvider>
-                  }
-                />
-                <Route
-                  path={url(routes.contacts.edit)}
-                  element={<ContactsEdit />}
-                />
-                <Route path="*" element={<h1>404 Not Found</h1>} />
+                <Route element={<ProtectedRoute isAuthRoute={true} />}>
+                  <Route path={routes.auth.login} element={<Login />} />
+                  <Route path={routes.auth.register} element={<Register />} />
+                </Route>
+                <Route element={<ProtectedRoute />}>
+                  <Route path={routes.home} element={<Home />} />
+                  <Route
+                    path={routes.contacts.index}
+                    element={<ContactsIndex />}
+                  />
+                  <Route
+                    path={routes.contacts.create}
+                    element={
+                      <ContactContextProvider>
+                        <ContactsCreate />
+                      </ContactContextProvider>
+                    }
+                  />
+                  <Route
+                    path={url(routes.contacts.edit)}
+                    element={<ContactsEdit />}
+                  />
+                  <Route path="*" element={<h1>404 Not Found</h1>} />
+                </Route>
               </Routes>
             </AlertContextProvider>
           </ContactRequestErrorContextProvider>
