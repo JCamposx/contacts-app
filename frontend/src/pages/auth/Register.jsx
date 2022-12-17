@@ -10,12 +10,15 @@ import { AlertContext } from "../../context/AlertContext";
 import { AuthContext } from "../../context/AuthContext";
 import { routes } from "../../routes/routes";
 
-export default function Login() {
+export default function Register() {
   const [credentials, setCredentials] = useState({
+    name: "",
     email: "",
     password: "",
+    password_confirmation: "",
   });
   const [credentialError, setCredentialError] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -25,7 +28,7 @@ export default function Login() {
   });
 
   const { setUser } = useContext(AuthContext);
-  const { showAlert, hideAlert } = useContext(AlertContext);
+  const { hideAlert, showAlert } = useContext(AlertContext);
 
   const navigate = useNavigate();
 
@@ -34,12 +37,16 @@ export default function Login() {
   }, []);
 
   useEffect(() => {
+    setCredentialError({ ...credentialError, name: "" });
+  }, [credentials.name]);
+
+  useEffect(() => {
     setCredentialError({ ...credentialError, email: "" });
   }, [credentials.email]);
 
   useEffect(() => {
     setCredentialError({ ...credentialError, password: "" });
-  }, [credentials.password]);
+  }, [credentials.password, credentials.password_confirmation]);
 
   function handleChange(e) {
     setCredentials({
@@ -52,18 +59,18 @@ export default function Login() {
     e.preventDefault();
 
     axios
-      .post(routes.api.auth.login, credentials)
+      .post(routes.api.auth.register, credentials)
       .then((res) => {
         setUser(res.data);
         localStorage.setItem("user", JSON.stringify(res.data));
-        localStorage.setItem("flashMessage", "Login successfully");
+        localStorage.setItem("flashMessage", "User registered successfully");
         navigate(routes.home);
       })
       .catch((e) => {
         if (!e.response.data) {
           setAlertError({
             type: "danger",
-            message: "Failed login: server error",
+            message: "Failed register: server error",
           });
           showAlert();
           return;
@@ -72,19 +79,10 @@ export default function Login() {
         if (e.response.data.errors) {
           const errors = e.response.data.errors;
           setCredentialError({
+            name: errors.name ? errors.name[0] : "",
             email: errors.email ? errors.email[0] : "",
             password: errors.password ? errors.password[0] : "",
           });
-          return;
-        }
-
-        if (e.response.data.message) {
-          setCredentialError({});
-          setAlertError({
-            type: "danger",
-            message: e.response.data.message,
-          });
-          showAlert();
           return;
         }
       });
@@ -92,11 +90,20 @@ export default function Login() {
 
   return (
     <>
-      <h1>Login</h1>
+      <h1>Register</h1>
 
       <Alert type={alertError.type}>{alertError.message}</Alert>
 
       <Form onSubmit={handleSubmit}>
+        <FormControl
+          id="name"
+          label="Name"
+          inputType="text"
+          inputValue={credentials.name}
+          onInputChange={handleChange}
+          errorMessage={credentialError.name}
+        />
+
         <FormControl
           id="email"
           label="Email"
@@ -115,17 +122,24 @@ export default function Login() {
           errorMessage={credentialError.password}
         />
 
+        <FormControl
+          id="password_confirmation"
+          label="Confirm password"
+          inputType="password"
+          inputValue={credentials.password_confirmation}
+          onInputChange={handleChange}
+          errorMessage={credentialError.password}
+        />
+
         <div className="row align-items-center">
-          <div className="col-8">
+          <div className="col-9">
             <Button type={colorType.primary} customClass="mt-2">
               Submit
             </Button>
           </div>
 
-          <div className="col-4">
-            <Link to={routes.auth.register}>
-              Go to Register
-            </Link>
+          <div className="col-3">
+            <Link to={routes.auth.login}>Go to Login</Link>
           </div>
         </div>
       </Form>

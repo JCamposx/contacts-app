@@ -5,6 +5,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import { ContactContextProvider } from "./context/ContactContext";
 import { ContactRequestErrorContextProvider } from "./context/ContactRequestErrorContext";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import ContactsCreate from "./pages/contacts/Create";
 import ContactsEdit from "./pages/contacts/Edit";
 import ContactsIndex from "./pages/contacts/Index";
@@ -21,6 +22,7 @@ function App() {
             <AlertContextProvider>
               <Routes>
                 <Route path={routes.auth.login} element={<Login />} />
+                <Route path={routes.auth.register} element={<Register />} />
                 <Route path={routes.home} element={<Home />} />
                 <Route
                   path={routes.contacts.index}
