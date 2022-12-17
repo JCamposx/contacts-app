@@ -41,7 +41,6 @@ export default function Index() {
         setData(res.data);
       })
       .catch(() => {
-        console.log(`Bearer ${user.token}`);
         setError("Failed loading contacts");
         showAlert();
       })

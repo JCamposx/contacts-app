@@ -11,6 +11,7 @@ import ContactsCreate from "./pages/contacts/Create";
 import ContactsEdit from "./pages/contacts/Edit";
 import ContactsIndex from "./pages/contacts/Index";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 import { routes, url } from "./routes/routes";
 
 function App() {
@@ -44,7 +45,7 @@ function App() {
                     path={url(routes.contacts.edit)}
                     element={<ContactsEdit />}
                   />
-                  <Route path="*" element={<h1>404 Not Found</h1>} />
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </AlertContextProvider>

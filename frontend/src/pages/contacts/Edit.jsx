@@ -44,8 +44,15 @@ export default function Edit() {
           phone_number: res.data.phone_number,
         });
       })
-      .catch(() => {
-        setError("Failed loading contact");
+      .catch((e) => {
+        const status = e.response.status;
+        let message = "Failed loading contact";
+        const arrStatus = {
+          404: "Contact not found",
+          500: `${message}: server error`,
+        };
+
+        arrStatus[status] ? setError(arrStatus[status]) : setError(message);
         showAlert();
       });
   }, []);
