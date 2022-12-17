@@ -1,7 +1,31 @@
-import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import { routes } from "../routes/routes";
 
 export default function Navbar() {
+  const { user, setUser } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    axios
+      .post(
+        routes.api.auth.logout,
+        {},
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      )
+      .then(() => {
+        localStorage.removeItem("user");
+        setUser(null);
+        navigate(routes.auth.login);
+      })
+      .catch((e) => console.log(e));
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
       <div className="container">
@@ -33,16 +57,38 @@ export default function Navbar() {
           id="navbarNav"
         >
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink className="nav-link" to={routes.contacts.index}>
-                My contacts
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to={routes.contacts.create}>
-                New contact
-              </NavLink>
-            </li>
+            {user ? (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to={routes.contacts.index}>
+                    My contacts
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to={routes.contacts.create}>
+                    New contact
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" onClick={handleLogout}>
+                    Logout
+                  </NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to={routes.auth.login}>
+                    Login
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to={routes.auth.register}>
+                    Register
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
