@@ -3,6 +3,7 @@ import Alert from "@/components/Alert";
 import Spinner from "@/components/Spinner";
 import { AlertContext } from "@/context/AlertContext";
 import { AuthContext } from "@/context/AuthContext";
+import { useFetchContacts } from "@/hooks/useFetchContacts";
 import { routes, url } from "@/routes/routes";
 import ContactList from "@/views/ContactList";
 import NoContact from "@/views/NoContact";
@@ -10,8 +11,6 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
 export default function Index() {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [flashMessage, setFlashMessage] = useState({
     type: "",
@@ -20,6 +19,11 @@ export default function Index() {
 
   const { showAlert, hideAlert } = useContext(AlertContext);
   const { user } = useContext(AuthContext);
+
+  const [data, setData, error] = useFetchContacts(routes.api.contacts.index, {
+    onError: () => showAlert(),
+    onFinal: () => setIsLoading(false),
+  });
 
   useEffect(() => {
     hideAlert();
@@ -32,19 +36,6 @@ export default function Index() {
       showAlert();
       localStorage.removeItem("flashMessage");
     }
-
-    axios
-      .get(routes.api.contacts.index, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch(() => {
-        setError("Failed loading contacts");
-        showAlert();
-      })
-      .finally(() => setIsLoading(false));
   }, []);
 
   function handleDelete(id) {
