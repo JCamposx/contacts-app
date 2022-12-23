@@ -4,18 +4,16 @@ import Spinner from "@/components/Spinner";
 import { AlertContext } from "@/context/AlertContext";
 import { AuthContext } from "@/context/AuthContext";
 import { useFetchContacts } from "@/hooks/useFetchContacts";
-import { routes, url } from "@/routes/routes.js";
+import { routes, url } from "@/routes/routes";
 import ContactList from "@/views/ContactList";
 import NoContact from "@/views/NoContact";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { useFlashMessage } from "../hooks/useFlashMessage";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [flashMessage, setFlashMessage] = useState({
-    type: "",
-    message: "",
-  });
+  const [alert, setAlert] = useState({});
 
   const { user } = useContext(AuthContext);
   const { showAlert, hideAlert } = useContext(AlertContext);
@@ -25,18 +23,18 @@ export default function Home() {
     onFinal: () => setIsLoading(false),
   });
 
+  const [flashMessage] = useFlashMessage();
+
   useEffect(() => {
     hideAlert();
-
-    if (localStorage.getItem("flashMessage")) {
-      setFlashMessage({
-        type: colorType.info,
-        message: localStorage.getItem("flashMessage"),
-      });
-      showAlert();
-      localStorage.removeItem("flashMessage");
-    }
   }, []);
+
+  useEffect(() => {
+    if (flashMessage.type) {
+      setAlert({ type: flashMessage.type, message: flashMessage.message });
+      showAlert();
+    }
+  }, [flashMessage]);
 
   function handleDelete(id) {
     axios
@@ -45,7 +43,7 @@ export default function Home() {
       })
       .then(() => {
         setData(data.filter((item) => item.id !== id));
-        setFlashMessage({
+        setAlert({
           type: colorType.danger,
           message: "Contact deleted successfully",
         });
@@ -63,7 +61,7 @@ export default function Home() {
         <Alert type={colorType.danger}>{error}</Alert>
       ) : (
         <>
-          <Alert type={flashMessage.type}>{flashMessage.message}</Alert>
+          <Alert type={alert.type}>{alert.message}</Alert>
 
           <div className="row justify-content-center align-items-center mt-3">
             {data.length === 0 ? (
