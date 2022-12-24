@@ -2,31 +2,30 @@ import colorType from "@/assets/js/colorType";
 import Alert from "@/components/Alert";
 import Spinner from "@/components/Spinner";
 import { AlertContext } from "@/context/AlertContext";
-import { AuthContext } from "@/context/AuthContext";
-import { useFetchContacts } from "@/hooks/useFetchContacts";
-import { routes, url } from "@/routes/routes";
+import { useContact } from "@/hooks/useContact";
+import { useFlashMessage } from "@/hooks/useFlashMessage";
 import ContactList from "@/views/ContactList";
 import NoContact from "@/views/NoContact";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { useFlashMessage } from "../hooks/useFlashMessage";
+import { useContext, useEffect } from "react";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [alert, setAlert] = useState({});
-
-  const { user } = useContext(AuthContext);
   const { showAlert, hideAlert } = useContext(AlertContext);
 
-  const [data, setData, error] = useFetchContacts(routes.api.contacts.latest, {
-    onError: () => showAlert(),
-    onFinal: () => setIsLoading(false),
-  });
+  const {
+    data,
+    error,
+    alert,
+    setAlert,
+    isLoading,
+    getAllContacts,
+    deleteContact,
+  } = useContact();
 
   const [flashMessage] = useFlashMessage();
 
   useEffect(() => {
     hideAlert();
+    getAllContacts();
   }, []);
 
   useEffect(() => {
@@ -35,22 +34,6 @@ export default function Home() {
       showAlert();
     }
   }, [flashMessage]);
-
-  function handleDelete(id) {
-    axios
-      .delete(url(routes.api.contacts.delete, { id }), {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then(() => {
-        setData(data.filter((item) => item.id !== id));
-        setAlert({
-          type: colorType.danger,
-          message: "Contact deleted successfully",
-        });
-        showAlert();
-      })
-      .catch((e) => console.log(e));
-  }
 
   return (
     <>
@@ -69,7 +52,7 @@ export default function Home() {
             ) : (
               <ContactList
                 contacts={data}
-                onDeleteContact={handleDelete}
+                onDeleteContact={deleteContact}
                 customClass="col-md-4"
               />
             )}
