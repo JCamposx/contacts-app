@@ -4,25 +4,20 @@ import Button from "@/components/Button";
 import Form from "@/components/Form";
 import FormControl from "@/components/FormControl";
 import { AlertContext } from "@/context/AlertContext";
-import { AuthContext } from "@/context/AuthContext";
-import { ContactContext } from "@/context/ContactContext";
-import { ContactRequestErrorContext } from "@/context/ContactRequestErrorContext";
-import { routes } from "@/routes/routes";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContact } from "@/hooks/useContact";
+import { useContext, useEffect } from "react";
 
 export default function Create() {
-  const [error, setError] = useState("");
-
-  const { user } = useContext(AuthContext);
-  const { contact, setContact } = useContext(ContactContext);
   const { hideAlert } = useContext(AlertContext);
-  const { requestError, handleRequestErrors } = useContext(
-    ContactRequestErrorContext
-  );
 
-  const navigate = useNavigate();
+  const {
+    contact,
+    setContact,
+    error,
+    storeContact,
+    requestError,
+    handleRequestErrors,
+  } = useContact();
 
   useEffect(() => {
     hideAlert();
@@ -38,18 +33,7 @@ export default function Create() {
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    axios
-      .post(routes.api.contacts.store, contact, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then(() => {
-        localStorage.setItem("flashMessage", "Contact created successfully");
-        navigate(routes.home);
-      })
-      .catch((e) => {
-        handleRequestErrors(e.response.data.errors);
-      });
+    storeContact(contact);
   }
 
   return (

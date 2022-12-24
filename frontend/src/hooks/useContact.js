@@ -72,6 +72,20 @@ export function useContact() {
       });
   }
 
+  function storeContact(contact) {
+    axios
+      .post(routes.api.contacts.store, contact, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then(() => {
+        localStorage.setItem("flashMessage", "Contact created successfully");
+        navigate(routes.home);
+      })
+      .catch((e) => {
+        handleRequestErrors(e.response.data.errors);
+      });
+  }
+
   function updateContact(id) {
     axios
       .put(url(routes.api.contacts.update, { id }), contact, {
@@ -118,6 +132,7 @@ export function useContact() {
     getAllContacts,
     getLatestContacts,
     getContact,
+    storeContact,
     updateContact,
     deleteContact,
   };
