@@ -2,7 +2,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { routes } from "@/routes/routes";
 import axios from "axios";
 import { useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { user, setUser } = useContext(AuthContext);
@@ -60,30 +60,30 @@ export default function Navbar() {
             {user ? (
               <>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to={routes.contacts.index}>
+                  <NavLink className="nav-link" end to={routes.contacts.index}>
                     My contacts
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to={routes.contacts.create}>
+                  <NavLink className="nav-link" end to={routes.contacts.create}>
                     New contact
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" onClick={handleLogout}>
+                  <Link className="nav-link" onClick={handleLogout}>
                     Logout
-                  </NavLink>
+                  </Link>
                 </li>
               </>
             ) : (
               <>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to={routes.auth.login}>
+                  <NavLink className="nav-link" end to={routes.auth.login}>
                     Login
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to={routes.auth.register}>
+                  <NavLink className="nav-link" end to={routes.auth.register}>
                     Register
                   </NavLink>
                 </li>
