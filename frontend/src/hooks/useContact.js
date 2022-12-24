@@ -1,18 +1,30 @@
 import colorType from "@/assets/js/colorType";
 import { AlertContext } from "@/context/AlertContext";
 import { AuthContext } from "@/context/AuthContext";
+import { ContactRequestErrorContext } from "@/context/ContactRequestErrorContext";
 import { routes, url } from "@/routes/routes";
 import axios from "axios";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function useContact() {
   const [data, setData] = useState([]);
+  const [contact, setContact] = useState({
+    name: "",
+    description: "",
+    phone_number: "",
+  });
   const [error, setError] = useState("");
   const [alert, setAlert] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   const { user } = useContext(AuthContext);
   const { showAlert } = useContext(AlertContext);
+  const { requestError, handleRequestErrors } = useContext(
+    ContactRequestErrorContext
+  );
+
+  const navigate = useNavigate();
 
   function getAllContacts() {
     axios
@@ -34,6 +46,49 @@ export function useContact() {
       .finally(() => setIsLoading(false));
   }
 
+  function getContact(id) {
+    axios
+      .get(url(routes.api.contacts.show, { id }), {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((res) => {
+        setContact({
+          name: res.data.name,
+          description: res.data.description,
+          phone_number: res.data.phone_number,
+        });
+      })
+      .catch((e) => {
+        const message = "Failed loading contact";
+        const arrStatus = {
+          404: "Contact not found",
+          500: `${message}: server error`,
+        };
+
+        const status = e.response.status;
+
+        arrStatus[status] ? setError(arrStatus[status]) : setError(message);
+        showAlert();
+      });
+  }
+
+  function updateContact(id) {
+    axios
+      .put(url(routes.api.contacts.update, { id }), contact, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then(() => {
+        localStorage.setItem(
+          "flashMessage",
+          `Contact ${contact.name} updated successfully`
+        );
+        navigate(-1);
+      })
+      .catch((e) => {
+        handleRequestErrors(e.response.data.errors);
+      });
+  }
+
   function deleteContact(id) {
     axios
       .delete(url(routes.api.contacts.delete, { id }), {
@@ -52,12 +107,18 @@ export function useContact() {
 
   return {
     data,
+    contact,
+    setContact,
     error,
     alert,
     setAlert,
     isLoading,
+    requestError,
+    handleRequestErrors,
     getAllContacts,
     getLatestContacts,
+    getContact,
+    updateContact,
     deleteContact,
   };
 }

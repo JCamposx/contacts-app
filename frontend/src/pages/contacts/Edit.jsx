@@ -4,57 +4,29 @@ import Button from "@/components/Button";
 import Form from "@/components/Form";
 import FormControl from "@/components/FormControl";
 import { AlertContext } from "@/context/AlertContext";
-import { AuthContext } from "@/context/AuthContext";
-import { ContactRequestErrorContext } from "@/context/ContactRequestErrorContext";
-import { routes, url } from "@/routes/routes";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useContact } from "@/hooks/useContact";
+import { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 export default function Edit() {
-  const [contact, setContact] = useState({
-    name: "",
-    description: "",
-    phone_number: "",
-  });
-  const [error, setError] = useState("");
-
   const { id } = useParams();
 
-  const navigate = useNavigate();
+  const { hideAlert } = useContext(AlertContext);
 
-  const { user } = useContext(AuthContext);
-  const { showAlert, hideAlert } = useContext(AlertContext);
-  const { requestError, handleRequestErrors } = useContext(
-    ContactRequestErrorContext
-  );
+  const {
+    contact,
+    setContact,
+    error,
+    getContact,
+    updateContact,
+    requestError,
+    handleRequestErrors,
+  } = useContact();
 
   useEffect(() => {
     hideAlert();
     handleRequestErrors({});
-
-    axios
-      .get(url(routes.api.contacts.show, { id }), {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then((res) => {
-        setContact({
-          name: res.data.name,
-          description: res.data.description,
-          phone_number: res.data.phone_number,
-        });
-      })
-      .catch((e) => {
-        const status = e.response.status;
-        let message = "Failed loading contact";
-        const arrStatus = {
-          404: "Contact not found",
-          500: `${message}: server error`,
-        };
-
-        arrStatus[status] ? setError(arrStatus[status]) : setError(message);
-        showAlert();
-      });
+    getContact(id);
   }, []);
 
   function handleChange(e) {
@@ -67,20 +39,7 @@ export default function Edit() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    axios
-      .put(url(routes.api.contacts.update, { id }), contact, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then(() => {
-        localStorage.setItem(
-          "flashMessage",
-          `Contact ${contact.name} updated successfully`
-        );
-        navigate(-1);
-      })
-      .catch((e) => {
-        handleRequestErrors(e.response.data.errors);
-      });
+    updateContact(id);
   }
 
   return (
