@@ -32,7 +32,10 @@ export function useContact() {
         headers: { Authorization: `Bearer ${user.token}` },
       })
       .then((res) => setData(res.data))
-      .catch(() => setError("Failed loading contacts"))
+      .catch(() => {
+        setError("Failed loading contacts");
+        showAlert();
+      })
       .finally(() => setIsLoading(false));
   }
 
@@ -42,7 +45,10 @@ export function useContact() {
         headers: { Authorization: `Bearer ${user.token}` },
       })
       .then((res) => setData(res.data))
-      .catch(() => setError("Failed loading contacts"))
+      .catch(() => {
+        setError("Failed loading contacts");
+        showAlert();
+      })
       .finally(() => setIsLoading(false));
   }
 

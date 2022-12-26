@@ -17,7 +17,7 @@ export default function Home() {
     alert,
     setAlert,
     isLoading,
-    getAllContacts,
+    getLatestContacts,
     deleteContact,
   } = useContact();
 
@@ -25,7 +25,7 @@ export default function Home() {
 
   useEffect(() => {
     hideAlert();
-    getAllContacts();
+    getLatestContacts();
   }, []);
 
   useEffect(() => {

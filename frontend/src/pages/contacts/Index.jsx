@@ -17,7 +17,7 @@ export default function Index() {
     alert,
     setAlert,
     isLoading,
-    getLatestContacts,
+    getAllContacts,
     deleteContact,
   } = useContact();
 
@@ -25,7 +25,7 @@ export default function Index() {
 
   useEffect(() => {
     hideAlert();
-    getLatestContacts();
+    getAllContacts();
   }, []);
 
   useEffect(() => {
