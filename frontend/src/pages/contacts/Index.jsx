@@ -10,7 +10,7 @@ import NoContact from "@/views/NoContact";
 import { useContext, useEffect, useState } from "react";
 
 export default function Index() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(null);
   const [search, setSearch] = useState("");
 
   const { showAlert, hideAlert } = useContext(AlertContext);
@@ -29,7 +29,7 @@ export default function Index() {
 
   useEffect(() => {
     hideAlert();
-    getAllContacts();
+    getAllContacts({ onSuccess: (res) => setContacts(res.data) });
   }, []);
 
   useEffect(() => {
@@ -40,14 +40,15 @@ export default function Index() {
   }, [flashMessage]);
 
   useEffect(() => {
-    setContacts([...data]);
-  }, [data]);
-
-  useEffect(() => {
     setContacts(
       data.filter((contact) => contact.name.toLowerCase().includes(search))
     );
   }, [search]);
+
+  function handleDelete(id) {
+    deleteContact(id);
+    setContacts(contacts.filter((item) => item.id !== id));
+  }
 
   return (
     <>
@@ -76,7 +77,7 @@ export default function Index() {
             ) : (
               <ContactList
                 contacts={contacts}
-                onDeleteContact={deleteContact}
+                onDeleteContact={handleDelete}
                 customClass="col-md-6"
               />
             )}

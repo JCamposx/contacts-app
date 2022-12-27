@@ -26,12 +26,15 @@ export function useContact() {
 
   const navigate = useNavigate();
 
-  function getAllContacts() {
+  async function getAllContacts({ onSuccess = null }) {
     axios
       .get(routes.api.contacts.index, {
         headers: { Authorization: `Bearer ${user.token}` },
       })
-      .then((res) => setData(res.data))
+      .then((res) => {
+        setData(res.data);
+        onSuccess && onSuccess(res);
+      })
       .catch(() => {
         setError("Failed loading contacts");
         showAlert();
